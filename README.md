@@ -27,7 +27,7 @@ A self-contained HTML exam simulator for the **CompTIA A+ Core 1 (220-1101 / 220
 9. Simulated terminal — diagnose a stale name-resolution entry with `ping`/`nslookup`
 10. Cloud models + safe malware-sandbox VM settings
 
-- Single **90-minute timer covering both sections**, live progress bar, and a clickable question palette
+- Single **165-minute timer covering both sections**, live progress bar, and a clickable question palette
 - On submit: MCQ score + PBQ score, pass/fail vs. the ~75% (675/900) threshold, per-domain breakdown
 - **Correct answer and explanation revealed for every question and PBQ**, with a "show only missed" review filter
 - Print / save-as-PDF friendly review mode and one-click retake

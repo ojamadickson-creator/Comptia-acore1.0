@@ -121,7 +121,7 @@
   <div class="exam-meta">
     <div class="chip">Section 1: <b>200</b> MCQs (A–D)</div>
     <div class="chip">Section 2: <b>10</b> performance-based questions</div>
-    <div class="chip"><b>90 min</b> total</div>
+    <div class="chip"><b>165 min</b> total</div>
     <div class="chip">Pass mark ≈ <b>75%</b> (675/900 scale)</div>
     <div class="chip">Answers + explanations on submit</div>
   </div>
@@ -131,7 +131,7 @@
   <span id="progressText">0 / 200 answered</span>
   <div class="progress"><div id="progressFill"></div></div>
   <span class="spacer"></span>
-  <span id="timer">90:00</span>
+  <span id="timer">165:00</span>
   <button class="btn btn-primary" id="topSubmit">Submit Exam</button>
 </div>
 
@@ -142,7 +142,7 @@
     <ul>
       <li><b>Section 1 (200 MCQs):</b> every question is <b>scenario-based</b> — read the situation, then choose the <b>single best answer</b> (A–D). Use the palette below to jump around; answered questions turn green.</li>
       <li><b>Section 2 (10 PBQs):</b> hands-on tasks — configure a router, repair connections in a simulated terminal, order the troubleshooting methodology, design a RAID array, diagnose a clickable laptop diagram, and more. Partial credit applies (10 points each, 100 total).</li>
-      <li>The single <b>90-minute timer covers both sections</b>; it is a guide and will <b>not</b> auto-submit your exam.</li>
+      <li>The single <b>165-minute timer covers both sections</b>; it is a guide and will <b>not</b> auto-submit your exam.</li>
       <li>When you click <b>Submit Exam</b>, both sections are graded: you get your MCQ score, PBQ score, per-domain breakdown, and the <b>correct answer with an explanation for every question and task</b>.</li>
       <li>Domains: Mobile Devices · Networking · Hardware · Virtualization &amp; Cloud · Hardware &amp; Network Troubleshooting.</li>
     </ul>
@@ -153,7 +153,7 @@
 
   <div class="sec2-head" id="sec2Head">
     <h2>Section 2 — Performance-Based Questions (PBQs)</h2>
-    <p>10 hands-on simulation tasks · 10 points each (partial credit) · 100 points total. On the real Core 1 exam these appear first — here they follow the MCQs so you can warm up. Complete them within the same 90-minute timer.</p>
+    <p>10 hands-on simulation tasks · 10 points each (partial credit) · 100 points total. On the real Core 1 exam these appear first — here they follow the MCQs so you can warm up. Complete them within the same 165-minute timer.</p>
   </div>
   <div id="pbqs"></div>
 
@@ -258,7 +258,7 @@
   }
 
   /* ---------- timer ---------- */
-  var secs = 90*60;
+  var secs = 165*60;
   setInterval(function(){
     if(submitted) return;
     if(secs>0) secs--;
