@@ -1,0 +1,9 @@
+{
+  "name": "comptia-a-core1-exam",
+  "version": "1.0.0",
+  "description": "CompTIA A+ Core 1 (220-1101) exam simulator — 200 scenario-based MCQs with answers and explanations",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}

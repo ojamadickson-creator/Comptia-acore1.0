@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompTIA A+ Core 1 — 200-Question Scenario Exam Simulator</title>
+<style>
+  :root{
+    --bg:#0d1220; --panel:#151c30; --panel2:#1b2440; --line:#2a3556;
+    --ink:#e8ecf6; --dim:#9aa7c4; --accent:#f5b83d; --accent2:#4cc38a;
+    --danger:#e5484d; --good:#46a758; --radius:10px;
+    --font:"Segoe UI","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55}
+  .wrap{max-width:920px;margin:0 auto;padding:0 18px 120px}
+
+  header.hero{background:linear-gradient(180deg,#182040 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:42px 18px 28px;text-align:center}
+  header.hero h1{margin:0 0 6px;font-size:30px;letter-spacing:.3px}
+  header.hero h1 span{color:var(--accent)}
+  header.hero p{margin:4px 0;color:var(--dim)}
+  .exam-meta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:13px;color:var(--dim)}
+  .chip b{color:var(--ink)}
+
+  .bar{position:sticky;top:0;z-index:20;background:rgba(13,18,32,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .bar .spacer{flex:1}
+  #timer{font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent);font-size:15px}
+  #progressText{font-size:13px;color:var(--dim)}
+  .progress{height:6px;background:var(--panel2);border-radius:99px;overflow:hidden;width:160px}
+  .progress>div{height:100%;width:0%;background:var(--accent2);transition:width .2s}
+
+  .btn{cursor:pointer;border:none;border-radius:8px;padding:11px 22px;font-size:15px;font-weight:600;font-family:var(--font);transition:filter .15s}
+  .btn:hover{filter:brightness(1.12)}
+  .btn-primary{background:var(--accent);color:#1a1405}
+  .btn-ghost{background:transparent;color:var(--dim);border:1px solid var(--line)}
+  .btn-danger{background:var(--danger);color:#fff}
+
+  .intro{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-top:28px}
+  .intro h2{margin-top:0;color:var(--accent)}
+  .intro ul{padding-left:22px;color:var(--dim)}
+  .intro li{margin-bottom:6px}
+
+  .domain-tag{display:inline-block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(245,184,61,.08);border:1px solid rgba(245,184,61,.25);border-radius:6px;padding:2px 9px;margin-bottom:10px}
+  .qcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:22px;scroll-margin-top:80px}
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .qnum{font-weight:700;color:var(--dim);font-size:13px;letter-spacing:.5px}
+  .qtext{font-size:16.5px;font-weight:600;margin:6px 0 16px}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:8px;margin-bottom:9px;cursor:pointer;background:var(--panel2);transition:border-color .12s,background .12s}
+  .opt:hover{border-color:#3d4a75}
+  .opt input{margin-top:4px;accent-color:var(--accent)}
+  .opt .letter{font-weight:700;color:var(--accent);min-width:18px}
+  .opt.sel{border-color:var(--accent);background:rgba(245,184,61,.06)}
+  .qcard.flagged{border-color:var(--accent)}
+
+  .opt.correct{border-color:var(--good);background:rgba(70,167,88,.10)}
+  .opt.wrong{border-color:var(--danger);background:rgba(229,72,77,.10)}
+  .verdict{font-size:13px;font-weight:700;margin:2px 0 10px}
+  .verdict.ok{color:var(--good)} .verdict.bad{color:var(--danger)} .verdict.skip{color:var(--accent)}
+  .explain{background:rgba(76,195,138,.07);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;padding:12px 14px;font-size:14.5px;color:#cfe4d8;margin-top:6px}
+  .explain b{color:var(--accent2)}
+
+  .submit-zone{margin-top:36px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+  #unansweredWarn{color:var(--accent);font-size:14px;margin-top:10px;display:none}
+
+  #results{display:none;margin-top:36px}
+  .score-hero{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:34px;text-align:center}
+  .score-big{font-size:56px;font-weight:800;line-height:1}
+  .score-pass{color:var(--good)} .score-fail{color:var(--danger)}
+  .score-sub{color:var(--dim);margin-top:8px}
+  .domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+  .dstat{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:14px}
+  .dstat h4{margin:0 0 8px;font-size:13px;color:var(--dim);font-weight:600}
+  .dstat .pct{font-size:22px;font-weight:700}
+  .dstat .frac{font-size:12px;color:var(--dim)}
+  .filter-row{display:flex;gap:10px;margin:26px 0 4px;flex-wrap:wrap}
+  .filter-row .btn{padding:8px 16px;font-size:13px}
+
+  footer{margin-top:60px;text-align:center;color:var(--dim);font-size:12.5px;border-top:1px solid var(--line);padding-top:22px}
+  .palette{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px}
+  .palette a{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);text-decoration:none;font-size:12px;cursor:pointer}
+  .palette a.answered{background:rgba(76,195,138,.18);border-color:var(--accent2);color:var(--accent2)}
+  @media print{ .bar,.submit-zone,.filter-row,header.hero .exam-meta,.btn{display:none!important} body{background:#fff;color:#000} .qcard,.intro,.score-hero{border-color:#ccc;background:#fff} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>CompTIA A+ <span>Core 1</span> Exam Simulator</h1>
+  <p>200 scenario-based multiple-choice questions · 220-1101 / 220-1201 objectives</p>
+  <div class="exam-meta">
+    <div class="chip"><b>200</b> questions</div>
+    <div class="chip"><b>1</b> correct answer each (A–D)</div>
+    <div class="chip"><b>90 min</b> suggested</div>
+    <div class="chip">Pass mark ≈ <b>75%</b> (675/900 scale)</div>
+    <div class="chip">Answers + explanations on submit</div>
+  </div>
+</header>
+
+<div class="bar">
+  <span id="progressText">0 / 200 answered</span>
+  <div class="progress"><div id="progressFill"></div></div>
+  <span class="spacer"></span>
+  <span id="timer">90:00</span>
+  <button class="btn btn-primary" id="topSubmit">Submit Exam</button>
+</div>
+
+<div class="wrap">
+
+  <div class="intro" id="introBox">
+    <h2>Instructions</h2>
+    <ul>
+      <li>Every question is <b>scenario-based</b> — read the situation, then choose the <b>single best answer</b> (A–D).</li>
+      <li>You can answer in any order. Use the question palette below to jump around; answered questions turn green.</li>
+      <li>The timer is a guide (90 minutes), it will <b>not</b> auto-submit your exam.</li>
+      <li>When you click <b>Submit Exam</b>, you will get your score, a per-domain breakdown, and the <b>correct answer with an explanation for every question</b>.</li>
+      <li>Domains: Mobile Devices · Networking · Hardware · Virtualization &amp; Cloud · Hardware &amp; Network Troubleshooting.</li>
+    </ul>
+    <div class="palette" id="palette"></div>
+  </div>
+
+  <div id="exam"></div>
+
+  <div class="submit-zone" id="submitZone">
+    <p style="color:var(--dim);margin-top:0">Finished? Submit to see your score and full answer explanations.</p>
+    <button class="btn btn-primary" style="font-size:17px;padding:14px 42px" id="mainSubmit">Submit Exam</button>
+    <div id="unansweredWarn"></div>
+  </div>
+
+  <div id="results"></div>
+
+  <footer>
+    CompTIA A+ Core 1 practice exam simulator — built from the supplied study guides (wireless, networking, RAM, troubleshooting, mobile devices, hardware).<br>
+    For study purposes only; not affiliated with CompTIA.
+  </footer>
+</div>
+
+<script src="js/questions-mobile.js"></script>
+<script src="js/questions-network.js"></script>
+<script src="js/questions-hardware.js"></script>
+<script src="js/questions-cloud.js"></script>
+<script src="js/questions-trouble1.js"></script>
+<script src="js/questions-trouble2.js"></script>
+<script>
+(function(){
+  "use strict";
+  var DOMAINS = [
+    {name:"Mobile Devices", bank:window.Q_MOBILE},
+    {name:"Networking", bank:window.Q_NETWORK},
+    {name:"Hardware", bank:window.Q_HARDWARE},
+    {name:"Virtualization & Cloud", bank:window.Q_CLOUD},
+    {name:"Troubleshooting", bank:window.Q_TROUBLE1.concat(window.Q_TROUBLE2)}
+  ];
+  var QUESTIONS = [];
+  DOMAINS.forEach(function(d){
+    d.bank.forEach(function(q){ QUESTIONS.push({domain:d.name, q:q.q, o:q.o, a:q.a, e:q.e}); });
+  });
+  var N = QUESTIONS.length; // 200
+  var answers = new Array(N).fill(null);
+  var submitted = false;
+  var LETTERS = ["A","B","C","D"];
+
+  /* ---------- render exam ---------- */
+  var exam = document.getElementById("exam");
+  var html = "";
+  QUESTIONS.forEach(function(q, i){
+    html += '<div class="qcard" id="q'+i+'">';
+    html += '<div class="domain-tag">'+q.domain+'</div>';
+    html += '<div class="qhead"><span class="qnum">QUESTION '+(i+1)+' / '+N+'</span></div>';
+    html += '<div class="qtext">'+q.q+'</div>';
+    q.o.forEach(function(opt, j){
+      html += '<label class="opt" data-q="'+i+'" data-o="'+j+'">'
+            + '<input type="radio" name="q'+i+'" value="'+j+'">'
+            + '<span class="letter">'+LETTERS[j]+'</span>'
+            + '<span class="optext">'+opt+'</span></label>';
+    });
+    html += '<div class="review-slot" id="rev'+i+'"></div></div>';
+  });
+  exam.innerHTML = html;
+
+  /* ---------- palette ---------- */
+  var palette = document.getElementById("palette");
+  var phtml = "";
+  for (var i=0;i<N;i++) phtml += '<a data-target="q'+i+'" id="p'+i+'">'+(i+1)+'</a>';
+  palette.innerHTML = phtml;
+  palette.addEventListener("click", function(e){
+    var t = e.target.closest("a"); if(!t) return;
+    var el = document.getElementById(t.dataset.target);
+    if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  /* ---------- answer tracking ---------- */
+  exam.addEventListener("change", function(e){
+    if(e.target.type !== "radio") return;
+    var qi = +e.target.name.slice(1);
+    answers[qi] = +e.target.value;
+    document.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(function(l){ l.classList.remove("sel"); });
+    e.target.closest(".opt").classList.add("sel");
+    document.getElementById("p"+qi).classList.add("answered");
+    updateProgress();
+  });
+
+  function updateProgress(){
+    var done = answers.filter(function(a){return a!==null;}).length;
+    document.getElementById("progressText").textContent = done+" / "+N+" answered";
+    document.getElementById("progressFill").style.width = (done/N*100)+"%";
+  }
+
+  /* ---------- timer ---------- */
+  var secs = 90*60;
+  setInterval(function(){
+    if(submitted) return;
+    if(secs>0) secs--;
+    var m = Math.floor(secs/60), s = secs%60;
+    document.getElementById("timer").textContent = m+":"+(s<10?"0":"")+s;
+  },1000);
+
+  /* ---------- submit & grade ---------- */
+  function submitExam(){
+    if(submitted) return;
+    var unanswered = answers.filter(function(a){return a===null;}).length;
+    if(unanswered>0){
+      if(!confirm("You have "+unanswered+" unanswered question(s). They will be marked wrong. Submit anyway?")) return;
+    } else if(!confirm("Submit the exam now? You cannot change answers afterwards.")) return;
+    submitted = true;
+
+    var perDomain = {};
+    DOMAINS.forEach(function(d){ perDomain[d.name]={c:0,t:0}; });
+    var correctCount = 0;
+
+    QUESTIONS.forEach(function(q,i){
+      var sel = answers[i];
+      var ok = sel===q.a;
+      perDomain[q.domain].t++;
+      if(ok){ perDomain[q.domain].c++; correctCount++; }
+
+      var card = document.getElementById("q"+i);
+      card.querySelectorAll(".opt").forEach(function(l){
+        var j = +l.dataset.o;
+        l.querySelector("input").disabled = true;
+        l.style.cursor = "default";
+        if(j===q.a) l.classList.add("correct");
+        else if(j===sel) l.classList.add("wrong");
+        l.classList.remove("sel");
+      });
+
+      var rev = document.getElementById("rev"+i);
+      var v;
+      if(sel===null) v = '<div class="verdict skip">✦ Not answered — the correct answer is '+LETTERS[q.a]+'</div>';
+      else if(ok)  v = '<div class="verdict ok">✔ Correct — '+LETTERS[q.a]+'</div>';
+      else         v = '<div class="verdict bad">✘ You chose '+LETTERS[sel]+' — the correct answer is '+LETTERS[q.a]+'</div>';
+      rev.innerHTML = v + '<div class="explain"><b>Explanation:</b> '+q.e+'</div>';
+    });
+
+    var pct = Math.round(correctCount/N*100);
+    var pass = pct>=75;
+
+    var rh = '<div class="score-hero">'
+      + '<div class="score-big '+(pass?'score-pass':'score-fail')+'">'+pct+'%</div>'
+      + '<div class="score-sub">'+correctCount+' / '+N+' correct — '+(pass?'PASS (at or above the ~75% CompTIA passing threshold)':'Below the ~75% passing threshold — review the explanations below and retake')+'</div>'
+      + '</div>'
+      + '<div class="domain-grid">';
+    DOMAINS.forEach(function(d){
+      var s = perDomain[d.name], p = Math.round(s.c/s.t*100);
+      rh += '<div class="dstat"><h4>'+d.name+'</h4><div class="pct" style="color:'+(p>=75?'var(--good)':'var(--danger)')+'">'+p+'%</div>'
+          + '<div class="frac">'+s.c+' / '+s.t+' correct</div></div>';
+    });
+    rh += '</div>'
+      + '<div class="filter-row">'
+      + '<button class="btn btn-ghost" id="fAll">Show all</button>'
+      + '<button class="btn btn-ghost" id="fWrong">Show only missed</button>'
+      + '<button class="btn btn-ghost" onclick="window.print()">Print / save as PDF</button>'
+      + '<button class="btn btn-danger" onclick="location.reload()">Retake exam</button>'
+      + '</div>'
+      + '<h3 style="margin:18px 0 0">Full review — correct answers &amp; explanations</h3>';
+    var results = document.getElementById("results");
+    results.innerHTML = rh;
+    results.style.display = "block";
+    document.getElementById("submitZone").style.display = "none";
+    document.getElementById("introBox").style.display = "none";
+    document.getElementById("topSubmit").style.display = "none";
+    document.getElementById("timer").textContent = "Submitted";
+    document.getElementById("timer").style.color = "var(--accent2)";
+
+    document.getElementById("fAll").onclick = function(){ filterCards(null); };
+    document.getElementById("fWrong").onclick = function(){ filterCards(true); };
+    function filterCards(onlyWrong){
+      QUESTIONS.forEach(function(q,i){
+        var wrong = answers[i]!==q.a;
+        document.getElementById("q"+i).style.display = (onlyWrong && !wrong) ? "none" : "";
+      });
+    }
+    results.scrollIntoView({behavior:"smooth"});
+  }
+
+  document.getElementById("mainSubmit").addEventListener("click", submitExam);
+  document.getElementById("topSubmit").addEventListener("click", submitExam);
+
+  window.addEventListener("beforeunload", function(e){
+    if(!submitted && answers.some(function(a){return a!==null;})){ e.preventDefault(); e.returnValue=""; }
+  });
+})();
+</script>
+</body>
+</html>
