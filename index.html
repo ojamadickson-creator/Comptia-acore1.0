@@ -76,6 +76,36 @@
   .filter-row{display:flex;gap:10px;margin:26px 0 4px;flex-wrap:wrap}
   .filter-row .btn{padding:8px 16px;font-size:13px}
 
+  /* ---- Section 2: PBQs ---- */
+  .sec2-head{margin-top:54px;padding:26px;background:linear-gradient(135deg,#1a2444,#151c30);border:1px solid var(--line);border-radius:var(--radius)}
+  .sec2-head h2{margin:0 0 6px;color:var(--accent);font-size:22px}
+  .sec2-head p{margin:0;color:var(--dim);font-size:14px}
+  .pbq-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:22px}
+  .pbq-card h3{margin:4px 0 10px;font-size:17px}
+  .pbq-scenario{color:#c8d2ea;font-size:14.5px;background:var(--panel2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px}
+  .pbq-scenario code{background:#0a0f1e;padding:1px 6px;border-radius:4px;font-size:13px}
+  .pbq-hint{color:var(--dim);font-size:12.5px;margin:10px 0 0}
+  .pbq-bin{display:flex;flex-wrap:wrap;gap:9px}
+  .pbq-part{display:flex;gap:9px;align-items:center;padding:10px 13px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;font-size:14px}
+  .pbq-part input{accent-color:var(--accent)}
+  .pbq-form{display:flex;flex-direction:column;gap:12px}
+  .pbq-form label{display:flex;gap:10px;align-items:center;font-size:14.5px;color:var(--ink);flex-wrap:wrap}
+  .pbq-form select,.pbq-form input[type=text],.pbq-form input[type=number]{background:#0a0f1e;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:14px}
+  .pbq-order{list-style:none;margin:0;padding:0;counter-reset:st}
+  .pbq-order li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);margin-bottom:8px;font-size:14.5px}
+  .pbq-order-btns button{background:#0a0f1e;border:1px solid var(--line);color:var(--accent);border-radius:6px;width:30px;height:28px;cursor:pointer;font-size:13px}
+  .pbq-term{background:#05080f;border:1px solid var(--line);border-radius:8px;font-family:Consolas,"Courier New",monospace;font-size:13.5px}
+  .pbq-term-out{white-space:pre-wrap;color:#8fd0a5;padding:14px 14px 4px;min-height:60px;max-height:220px;overflow-y:auto}
+  .pbq-term-in{display:flex;align-items:center;padding:4px 14px 12px;color:#8fd0a5}
+  .pbq-term-in input{flex:1;background:transparent;border:none;outline:none;color:#e8ecf6;font-family:inherit;font-size:inherit;padding:4px 8px}
+  .pbq-svg{width:100%;max-width:640px;display:block;margin:0 auto}
+  .pbq-partzone rect,.pbq-partzone circle{transition:stroke .12s}
+  .pbq-picked rect,.pbq-picked circle{stroke:var(--accent)!important;stroke-width:2.5}
+  .pbq-good{border-color:var(--good)!important;background:rgba(70,167,88,.10)!important}
+  .pbq-bad{border-color:var(--danger)!important;background:rgba(229,72,77,.10)!important}
+  .pbq-partzone.pbq-good rect,.pbq-partzone.pbq-good circle{stroke:var(--good)!important;stroke-width:2.5}
+  .pbq-partzone.pbq-bad rect,.pbq-partzone.pbq-bad circle{stroke:var(--danger)!important;stroke-width:2.5}
+  .pbq-review{margin-top:14px}
   footer{margin-top:60px;text-align:center;color:var(--dim);font-size:12.5px;border-top:1px solid var(--line);padding-top:22px}
   .palette{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px}
   .palette a{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);text-decoration:none;font-size:12px;cursor:pointer}
@@ -87,11 +117,11 @@
 
 <header class="hero">
   <h1>CompTIA A+ <span>Core 1</span> Exam Simulator</h1>
-  <p>200 scenario-based multiple-choice questions · 220-1101 / 220-1201 objectives</p>
+  <p>200 scenario-based MCQs + 10 hands-on performance-based questions · 220-1101 / 220-1201 objectives</p>
   <div class="exam-meta">
-    <div class="chip"><b>200</b> questions</div>
-    <div class="chip"><b>1</b> correct answer each (A–D)</div>
-    <div class="chip"><b>90 min</b> suggested</div>
+    <div class="chip">Section 1: <b>200</b> MCQs (A–D)</div>
+    <div class="chip">Section 2: <b>10</b> performance-based questions</div>
+    <div class="chip"><b>90 min</b> total</div>
     <div class="chip">Pass mark ≈ <b>75%</b> (675/900 scale)</div>
     <div class="chip">Answers + explanations on submit</div>
   </div>
@@ -110,16 +140,22 @@
   <div class="intro" id="introBox">
     <h2>Instructions</h2>
     <ul>
-      <li>Every question is <b>scenario-based</b> — read the situation, then choose the <b>single best answer</b> (A–D).</li>
-      <li>You can answer in any order. Use the question palette below to jump around; answered questions turn green.</li>
-      <li>The timer is a guide (90 minutes), it will <b>not</b> auto-submit your exam.</li>
-      <li>When you click <b>Submit Exam</b>, you will get your score, a per-domain breakdown, and the <b>correct answer with an explanation for every question</b>.</li>
+      <li><b>Section 1 (200 MCQs):</b> every question is <b>scenario-based</b> — read the situation, then choose the <b>single best answer</b> (A–D). Use the palette below to jump around; answered questions turn green.</li>
+      <li><b>Section 2 (10 PBQs):</b> hands-on tasks — configure a router, repair connections in a simulated terminal, order the troubleshooting methodology, design a RAID array, diagnose a clickable laptop diagram, and more. Partial credit applies (10 points each, 100 total).</li>
+      <li>The single <b>90-minute timer covers both sections</b>; it is a guide and will <b>not</b> auto-submit your exam.</li>
+      <li>When you click <b>Submit Exam</b>, both sections are graded: you get your MCQ score, PBQ score, per-domain breakdown, and the <b>correct answer with an explanation for every question and task</b>.</li>
       <li>Domains: Mobile Devices · Networking · Hardware · Virtualization &amp; Cloud · Hardware &amp; Network Troubleshooting.</li>
     </ul>
     <div class="palette" id="palette"></div>
   </div>
 
   <div id="exam"></div>
+
+  <div class="sec2-head" id="sec2Head">
+    <h2>Section 2 — Performance-Based Questions (PBQs)</h2>
+    <p>10 hands-on simulation tasks · 10 points each (partial credit) · 100 points total. On the real Core 1 exam these appear first — here they follow the MCQs so you can warm up. Complete them within the same 90-minute timer.</p>
+  </div>
+  <div id="pbqs"></div>
 
   <div class="submit-zone" id="submitZone">
     <p style="color:var(--dim);margin-top:0">Finished? Submit to see your score and full answer explanations.</p>
@@ -141,6 +177,7 @@
 <script src="js/questions-cloud.js"></script>
 <script src="js/questions-trouble1.js"></script>
 <script src="js/questions-trouble2.js"></script>
+<script src="js/pbqs.js"></script>
 <script>
 (function(){
   "use strict";
@@ -177,6 +214,20 @@
     html += '<div class="review-slot" id="rev'+i+'"></div></div>';
   });
   exam.innerHTML = html;
+
+  /* ---------- render Section 2 PBQs ---------- */
+  var pbqWrap = document.getElementById("pbqs");
+  window.PBQS.forEach(function(p, i){
+    var card = document.createElement("div");
+    card.className = "pbq-card";
+    card.id = p.id;
+    card.innerHTML = '<div class="domain-tag">'+p.domain+'</div>'
+      + '<h3>PBQ '+(i+1)+' / '+window.PBQS.length+' — '+p.title+' <span style="color:var(--dim);font-size:12px;font-weight:400">('+p.max+' pts)</span></h3>'
+      + '<div class="pbq-scenario">'+p.scenario+'</div>'
+      + '<div class="pbq-body"></div><div class="pbq-revslot"></div>';
+    pbqWrap.appendChild(card);
+    p.render(card.querySelector(".pbq-body"));
+  });
 
   /* ---------- palette ---------- */
   var palette = document.getElementById("palette");
@@ -252,12 +303,22 @@
       rev.innerHTML = v + '<div class="explain"><b>Explanation:</b> '+q.e+'</div>';
     });
 
+    /* ---------- grade Section 2 PBQs ---------- */
+    var pbqTotal = 0, pbqMax = 0;
+    window.PBQS.forEach(function(p){
+      var card = document.getElementById(p.id);
+      var res = p.grade(card.querySelector(".pbq-body"));
+      pbqTotal += res.score; pbqMax += p.max;
+      card.querySelector(".pbq-revslot").innerHTML = res.review;
+    });
+
     var pct = Math.round(correctCount/N*100);
     var pass = pct>=75;
 
     var rh = '<div class="score-hero">'
       + '<div class="score-big '+(pass?'score-pass':'score-fail')+'">'+pct+'%</div>'
-      + '<div class="score-sub">'+correctCount+' / '+N+' correct — '+(pass?'PASS (at or above the ~75% CompTIA passing threshold)':'Below the ~75% passing threshold — review the explanations below and retake')+'</div>'
+      + '<div class="score-sub">Section 1 (MCQ): '+correctCount+' / '+N+' correct — '+(pass?'PASS (at or above the ~75% CompTIA passing threshold)':'Below the ~75% passing threshold — review the explanations below and retake')+'</div>'
+      + '<div class="score-sub" style="margin-top:6px">Section 2 (PBQ): <b style="color:'+(pbqTotal>=75?'var(--good)':'var(--danger)')+'">'+pbqTotal+' / '+pbqMax+' points</b></div>'
       + '</div>'
       + '<div class="domain-grid">';
     DOMAINS.forEach(function(d){
@@ -272,7 +333,7 @@
       + '<button class="btn btn-ghost" onclick="window.print()">Print / save as PDF</button>'
       + '<button class="btn btn-danger" onclick="location.reload()">Retake exam</button>'
       + '</div>'
-      + '<h3 style="margin:18px 0 0">Full review — correct answers &amp; explanations</h3>';
+      + '<h3 style="margin:18px 0 0">Full review — correct answers &amp; explanations (Sections 1 &amp; 2)</h3>';
     var results = document.getElementById("results");
     results.innerHTML = rh;
     results.style.display = "block";
@@ -289,6 +350,13 @@
         var wrong = answers[i]!==q.a;
         document.getElementById("q"+i).style.display = (onlyWrong && !wrong) ? "none" : "";
       });
+      var anyMissed = false;
+      window.PBQS.forEach(function(p){
+        var full = document.getElementById(p.id).querySelector(".pbq-review .verdict.ok") !== null;
+        document.getElementById(p.id).style.display = (onlyWrong && full) ? "none" : "";
+        if(!full) anyMissed = true;
+      });
+      document.getElementById("sec2Head").style.display = (onlyWrong && !anyMissed) ? "none" : "";
     }
     results.scrollIntoView({behavior:"smooth"});
   }
